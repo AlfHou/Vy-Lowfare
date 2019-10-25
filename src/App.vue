@@ -1,28 +1,75 @@
 <template>
-  <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
-  </div>
+<body>
+  <section class="hero is-primary is-bold">
+    <div class="hero-body">
+      <div class="container">
+        <h1 class="title">Lowfare train</h1>
+      </div>
+    </div>
+  </section>
+  <section></section>
+  <SearchView />
+</body>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
+import CalendarView from "./views/calendar/CalendarView";
+import SearchView from "./views/search/SearchView"
 
 export default {
-  name: 'app',
+  name: "app",
   components: {
-    HelloWorld
+    CalendarView,
+    SearchView
   }
-}
+};
 </script>
 
-<style>
-#app {
-  font-family: 'Avenir', Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
-}
+<style lang="scss">
+@import "~bulma/sass/utilities/_all";
+
+$primary: #0a9578;
+$primary-invert: findColorInvert($primary);
+
+$colors: (
+  "white": (
+    $white,
+    $black
+  ),
+  "black": (
+    $black,
+    $white
+  ),
+  "light": (
+    $light,
+    $light-invert
+  ),
+  "dark": (
+    $dark,
+    $dark-invert
+  ),
+  "primary": (
+    $primary,
+    $primary-invert
+  ),
+  "info": (
+    $info,
+    $info-invert
+  ),
+  "success": (
+    $success,
+    $success-invert
+  ),
+  "warning": (
+    $warning,
+    $warning-invert
+  ),
+  "danger": (
+    $danger,
+    $danger-invert
+  )
+);
+
+@import "~bulma";
+@import "~buefy/src/scss/buefy";
 </style>
