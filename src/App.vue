@@ -8,18 +8,20 @@
     </div>
   </section>
   <section></section>
-  <SearchView />
+  <div class="columns is-centered">
+    <div class="column is-half">
+    <SearchView/>
+    </div>
+  </div>
 </body>
 </template>
 
 <script>
-import CalendarView from "./views/calendar/CalendarView";
-import SearchView from "./views/search/SearchView"
+import SearchView from "./views/search/SearchView";
 
 export default {
   name: "app",
   components: {
-    CalendarView,
     SearchView
   }
 };
@@ -28,7 +30,7 @@ export default {
 <style lang="scss">
 @import "~bulma/sass/utilities/_all";
 
-$primary: #0a9578;
+$primary: #03265c;
 $primary-invert: findColorInvert($primary);
 
 $colors: (
