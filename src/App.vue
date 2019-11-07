@@ -7,12 +7,9 @@
       </div>
     </div>
   </section>
-  <section></section>
-  <div class="columns is-centered">
-    <div class="column is-half">
-    <SearchView/>
-    </div>
-  </div>
+  <section class="columns is-centered">
+    <SearchView class="column is-three-quarters" />
+  </section>
 </body>
 </template>
 

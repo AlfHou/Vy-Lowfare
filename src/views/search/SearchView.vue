@@ -2,44 +2,24 @@
   <section class="card">
     <div class="card-content columns">
       <div class="column">
-        <b-field label="From" type="is-dark">
-          <b-autocomplete
-            v-model="destination"
-            placeholder="Where From?"
-            :keep-first="true"
-            :open-on-focus="true"
-            :data="location"
-            @select="option => selected = option"
-            size="is-large"
-          ></b-autocomplete>
+        <Field label="From" placeholder="Where From?" />
+        <b-field label="Select datetime">
+          <b-datepicker placeholder="Type or select a date..." icon="calendar-today" editable></b-datepicker>
         </b-field>
       </div>
       <div class="column">
-        <b-field label="To" type="is-dark">
-          <b-autocomplete
-            v-model="destination"
-            placeholder="Where To?"
-            :keep-first="true"
-            :open-on-focus="true"
-            :data="location"
-            @select="option => selected = option"
-            size="is-large"
-          ></b-autocomplete>
-        </b-field>
+        <Field label="To" placeholder="Where to?" />
       </div>
     </div>
   </section>
 </template>
 <script>
+import Field from "./Field";
+
 export default {
-  data() {
-    return {
-      destination: "",
-      location: ["Oslo", "Bergen", "Trondheim"],
-      selected: null
-    };
-  },
-  computed: {}
+  components: {
+    Field
+  }
 };
 </script>
 <style scoped>
