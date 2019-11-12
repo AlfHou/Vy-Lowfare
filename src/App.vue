@@ -25,49 +25,8 @@ export default {
 </script>
 
 <style lang="scss">
-@import "~bulma/sass/utilities/_all";
+@import "./assets/style/variables.scss";
 
-$primary: #03265c;
-$primary-invert: findColorInvert($primary);
-
-$colors: (
-  "white": (
-    $white,
-    $black
-  ),
-  "black": (
-    $black,
-    $white
-  ),
-  "light": (
-    $light,
-    $light-invert
-  ),
-  "dark": (
-    $dark,
-    $dark-invert
-  ),
-  "primary": (
-    $primary,
-    $primary-invert
-  ),
-  "info": (
-    $info,
-    $info-invert
-  ),
-  "success": (
-    $success,
-    $success-invert
-  ),
-  "warning": (
-    $warning,
-    $warning-invert
-  ),
-  "danger": (
-    $danger,
-    $danger-invert
-  )
-);
 
 @import "~bulma";
 @import "~buefy/src/scss/buefy";

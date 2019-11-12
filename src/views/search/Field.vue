@@ -26,10 +26,15 @@ export default {
   },
   data() {
     return {
-      destination: "",
-      location: ["Oslo", "Bergen", "Trondheim"],
+      destination: undefined,
+      location: ["Oslo S", "Bergen", "Trondheim"],
       selected: null
     };
+  },
+  watch: {
+    destination(dest) {
+      this.$emit("destChange", dest)
+    }
   }
 };
 </script>
