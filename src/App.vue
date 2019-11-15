@@ -8,19 +8,14 @@
     </div>
   </section>
   <section class="columns is-centered">
-    <SearchView class="column is-three-quarters" />
+    <router-view class="column is-three-quarters"></router-view>
   </section>
 </body>
 </template>
 
 <script>
-import SearchView from "./views/search/SearchView";
-
 export default {
-  name: "app",
-  components: {
-    SearchView
-  }
+  name: "app"
 };
 </script>
 

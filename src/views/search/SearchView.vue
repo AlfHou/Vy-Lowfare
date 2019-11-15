@@ -3,19 +3,23 @@
     <div class="card-content columns is-centered">
       <div class="column">
         <Field @destChange="updateFrom" label="From" placeholder="Where From?" />
+        
+      </div>
+      <div class="column">
+        <Field @destChange="updateTo" label="To" placeholder="Where to?" />
+      </div>
+    </div>
+    <div class="columns is-centered">
+    <div class="column is-half">
         <b-field class="date-picker" label="Departure">
           <b-datepicker
             v-model="departure"
             placeholder="Type or select a date..."
             icon="calendar-today"
             editable
+            type="month"
+            size="is-medium"
           ></b-datepicker>
-        </b-field>
-      </div>
-      <div class="column">
-        <Field @destChange="updateTo" label="To" placeholder="Where to?" />
-        <b-field class="date-picker" label="Return">
-          <b-datepicker placeholder="Type or select a date..." icon="calendar-today" editable></b-datepicker>
         </b-field>
       </div>
     </div>
@@ -29,14 +33,18 @@
 <script>
 import Field from "./Field";
 import EnturService, {convertFeatureToLocation} from "@entur/sdk";
+//import EnturService from "@entur/sdk";
 
-const entur = new EnturService({ clientName: "noCompany-App" });
+const entur = new EnturService({ clientName: "AlfHouge-LowfareTrain" });
 
 export default {
   components: {
     Field
   },
   methods: {
+    // search: function() {
+    //   this.$router.push({name: "Calendar"}) 
+    // },
     search: function() {
       let from = convertFeatureToLocation(this.from);
       let to = convertFeatureToLocation(this.to);
@@ -83,9 +91,6 @@ export default {
 .date-picker {
   border-bottom: 1px solid $primary;
   border-radius: $radius;
-  margin-top: 2rem;
-}
-.b-field {
-  background-color: blue;
+  margin-bottom: 3rem;
 }
 </style>
