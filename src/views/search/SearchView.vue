@@ -32,8 +32,8 @@
 </template>
 <script>
 import Field from "./Field";
-import EnturService, {convertFeatureToLocation} from "@entur/sdk";
-//import EnturService from "@entur/sdk";
+//import EnturService, {convertFeatureToLocation} from "@entur/sdk";
+import EnturService from "@entur/sdk";
 
 const entur = new EnturService({ clientName: "AlfHouge-LowfareTrain" });
 
@@ -42,25 +42,25 @@ export default {
     Field
   },
   methods: {
-    // search: function() {
-    //   this.$router.push({name: "Calendar"}) 
-    // },
-    search: function() {
-      let from = convertFeatureToLocation(this.from);
-      let to = convertFeatureToLocation(this.to);
-      let query = {
-        searchDate: this.departure,
-        from: from,
-        to: to,
-        limit: 20,
-        modes: ["rail"]
-      };
-      console.log("Query: ", query)
-      /*eslint no-console: "off"*/
-      entur.getTripPatterns(query).then(res => {
-        console.log(res);
-      });
-    },
+     search: function() {
+       this.$router.push({name: "Calendar"}) 
+     },
+    //search: function() {
+    //  let from = convertFeatureToLocation(this.from);
+    //  let to = convertFeatureToLocation(this.to);
+    //  let query = {
+    //    searchDate: this.departure,
+    //    from: from,
+    //    to: to,
+    //    limit: 20,
+    //    modes: ["rail"]
+    //  };
+    //  console.log("Query: ", query)
+    //  /*eslint no-console: "off"*/
+    //  entur.getTripPatterns(query).then(res => {
+    //    console.log(res);
+    //  });
+    //},
     updateFrom: function(dest) {
       // Get first result
       entur.getFeatures(dest).then(result => {

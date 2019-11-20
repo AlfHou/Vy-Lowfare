@@ -1,15 +1,32 @@
 <template>
-<div>
-  <div v-for="index in 5" :key="index" class="columns">
-    <div
-      v-for="index in 7"
-      :key="index"
-      class="column"
-      style="height: 5rem; border: 2px solid black"
-    >{{index}}</div>
+  <div class="calendar">
+    <div v-for="index in 5" :key="index" class="columns">
+      <div
+        v-for="index in 7"
+        :key="index"
+        class="column"
+      >
+        <CalendarColumn />
+      </div>
+    </div>
   </div>
-</div>
 </template>
 <script>
-export default {};
+import CalendarColumn from "./CalendarColumn";
+
+export default {
+  components: {
+    CalendarColumn
+  }
+};
 </script>
+<style scoped>
+.column {
+  padding: 0;
+  margin: 0.5rem;
+}
+.calendar {
+  margin-top: 200px;
+  max-width: 90%;
+}
+</style>

@@ -18,11 +18,8 @@ export default {
   name: "app"
 };
 </script>
-
 <style lang="scss">
 @import "./assets/style/variables.scss";
-
-
 @import "~bulma";
 @import "~buefy/src/scss/buefy";
 </style>
