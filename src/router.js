@@ -7,9 +7,9 @@ const routes = [
         name: "Calendar",
         path: "/calendar",
         component: CalendarView,
-        props: true 
+        props: true
     },
-    { path: "/", component: SearchView }
+    { name: "Search", path: "/", component: SearchView }
 ];
 const router = new VueRouter({
     mode: "history",

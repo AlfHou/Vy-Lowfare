@@ -3,7 +3,7 @@
   <section class="hero is-primary is-bold">
     <div class="hero-body">
       <div class="container">
-        <h1 class="title">Lowfare train</h1>
+        <a @click="home" class="title">Lowfare train</a>
       </div>
     </div>
   </section>
@@ -15,7 +15,14 @@
 
 <script>
 export default {
-  name: "app"
+  name: "app",
+  methods: {
+    home: function() {
+        /*eslint no-console: "off"*/
+        console.log("home");
+      this.$router.push({name: "Search"});
+    }
+  }
 };
 </script>
 <style lang="scss">
