@@ -1,15 +1,9 @@
 <template>
   <div class="calendar">
-    <div v-for="row in 5" :key="row" class="columns">
-      <div
-        v-for="column in 7"
-        :key="column"
-        class="column"
-      >
+    <div v-for="index in 5" :key="index" class="columns">
+      <div v-for="index in 7" :key="index" class="column">
         <CalendarColumn>
-          <template #date>
-            {{}}
-          </template>
+          <template #date>{{}}</template>
         </CalendarColumn>
       </div>
     </div>
@@ -22,7 +16,7 @@ export default {
   props: {
     date: {
       type: Date,
-      required: true
+      default: () => new Date()
     }
   },
   components: {
@@ -34,7 +28,7 @@ export default {
       date.setDate(1);
       let month = date.getMonth();
       while (date.getMonth() === month) {
-        date = new Date(date.getTime() + (1000 * 60 * 60 * 24));
+        date = new Date(date.getTime() + 1000 * 60 * 60 * 24);
       }
     }
   },
@@ -46,10 +40,11 @@ export default {
 <style scoped>
 .column {
   padding: 0;
-  margin: 0.5rem;
+}
+.columns {
+  height: 26%;
 }
 .calendar {
   margin: 5em 0 5em 0;
-  max-width: 90%;
 }
 </style>

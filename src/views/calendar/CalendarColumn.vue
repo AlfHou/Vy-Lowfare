@@ -1,5 +1,5 @@
 <template>
-    <div class="calendar__column">
+    <div class="calendar__column is-rounded">
         <p><slot name="date"></slot></p>
         <p class="price">900</p>
     </div>
@@ -18,7 +18,9 @@ export default {
     @import "../../assets/style/variables.scss";
     .calendar__column{
         background-color: $light;
-        height: 5rem;
-        margin: 0;
+        margin: 2%;
+        padding: 2%;
+        border-radius: $radius-large;
+        height: 90%;
     }
 </style>

@@ -17,10 +17,11 @@
 export default {
   name: "app",
   methods: {
+
     home: function() {
-        /*eslint no-console: "off"*/
-        console.log("home");
-      this.$router.push({name: "Search"});
+      this.$router.push({name: "Search"}).catch(() => {
+        // Catch navigation duplicate and promptly ignore ;)
+      })
     }
   }
 };
