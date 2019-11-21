@@ -3,14 +3,13 @@
     <div class="card-content columns is-centered">
       <div class="column">
         <Field @destChange="updateFrom" label="From" placeholder="Where From?" />
-        
       </div>
       <div class="column">
         <Field @destChange="updateTo" label="To" placeholder="Where to?" />
       </div>
     </div>
     <div class="columns is-centered">
-    <div class="column is-half">
+      <div class="column is-half">
         <b-field class="date-picker" label="Departure">
           <b-datepicker
             v-model="departure"
@@ -42,9 +41,9 @@ export default {
     Field
   },
   methods: {
-     search: function() {
-       this.$router.push({name: "Calendar"}) 
-     },
+    search: function() {
+      this.$router.push({ name: "Calendar", params: { date: this.departure } });
+    },
     //search: function() {
     //  let from = convertFeatureToLocation(this.from);
     //  let to = convertFeatureToLocation(this.to);

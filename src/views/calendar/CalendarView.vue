@@ -8,7 +8,7 @@
       >
         <CalendarColumn>
           <template #date>
-            {{"TEST"}}
+            {{}}
           </template>
         </CalendarColumn>
       </div>
@@ -19,8 +19,27 @@
 import CalendarColumn from "./CalendarColumn";
 
 export default {
+  props: {
+    date: {
+      type: Date,
+      required: true
+    }
+  },
   components: {
     CalendarColumn
+  },
+  methods: {
+    // https://medium.com/@emamoah/building-a-calendar-from-scratch-with-vue-js-and-css-grid-no-libraries-dec53062ee25
+    getDates: function(date) {
+      date.setDate(1);
+      let month = date.getMonth();
+      while (date.getMonth() === month) {
+        date = new Date(date.getTime() + (1000 * 60 * 60 * 24));
+      }
+    }
+  },
+  created: function() {
+    this.getDates(this.date);
   }
 };
 </script>

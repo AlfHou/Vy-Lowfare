@@ -3,7 +3,12 @@ import CalendarView from "./views/calendar/CalendarView";
 import SearchView from "./views/search/SearchView"
 
 const routes = [
-    { name: "Calendar", path: "/calendar", component: CalendarView },
+    {
+        name: "Calendar",
+        path: "/calendar",
+        component: CalendarView,
+        props: true 
+    },
     { path: "/", component: SearchView }
 ];
 const router = new VueRouter({
