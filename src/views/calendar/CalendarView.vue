@@ -1,12 +1,16 @@
 <template>
   <div class="calendar">
-    <div v-for="index in 5" :key="index" class="columns">
+    <div v-for="row in 5" :key="row" class="columns">
       <div
-        v-for="index in 7"
-        :key="index"
+        v-for="column in 7"
+        :key="column"
         class="column"
       >
-        <CalendarColumn />
+        <CalendarColumn>
+          <template #date>
+            {{"TEST"}}
+          </template>
+        </CalendarColumn>
       </div>
     </div>
   </div>
@@ -26,7 +30,7 @@ export default {
   margin: 0.5rem;
 }
 .calendar {
-  margin-top: 200px;
+  margin: 5em 0 5em 0;
   max-width: 90%;
 }
 </style>

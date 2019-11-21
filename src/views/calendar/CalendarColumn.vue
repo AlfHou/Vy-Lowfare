@@ -1,7 +1,7 @@
 <template>
     <div class="calendar__column">
-        <p>1.</p>
-        <p>900</p>
+        <p><slot name="date"></slot></p>
+        <p class="price">900</p>
     </div>
 </template>
 <script>
