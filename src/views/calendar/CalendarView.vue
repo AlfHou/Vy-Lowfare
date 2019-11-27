@@ -1,19 +1,26 @@
 <template>
-  <div class="calendar">
-    <div class="columns">
-      <div v-for="day in dayNames" :key="day" class="column">{{day}}</div>
-    </div>
-    <div v-for="index in 5" :key="index" class="columns">
-      <div v-for="index in 7" :key="index" class="column">
-        <CalendarColumn>
-          <template #date>{{}}</template>
-        </CalendarColumn>
+  <div id="calendar">
+    <!-- <div class="columns">
+      <div v-for="day in dayNames" :key="day" class="column">
+        <span class="has-text-weight-bold">{{day}}</span>
       </div>
     </div>
+    <div v-for="row_index in 5" :key="row_index" class="columns">
+      <div v-for="column_index in 7" :key="column_index" class="column">
+        <CalendarColumn>
+          <template #date>{{"test"}}</template>
+        </CalendarColumn>
+      </div>
+    </div>-->
   </div>
 </template>
 <script>
+/*eslint no-console: "off"*/
+/*eslint no-unused-vars: "off"*/
+/*eslint vue/no-unused-components: "off"*/
+
 import CalendarColumn from "./CalendarColumn";
+import Vue from "vue";
 
 export default {
   props: {
@@ -26,25 +33,41 @@ export default {
     CalendarColumn
   },
   methods: {
-    // https://medium.com/@emamoah/building-a-calendar-from-scratch-with-vue-js-and-css-grid-no-libraries-dec53062ee25
     getDates: function(date) {
-      this.dates = [];
+      this.firstDay = new Date(date.getFullYear(), date.getMonth()).getDay();
+      this.daysInMonth =
+        32 - new Date(date.getFullYear(), date.getMonth(), 32).getDate();
+    },
+    populateCalendar: function() {
+      var CalendarColumnClass = Vue.extend(CalendarColumn);
 
-      date.setDate(1);
-      let month = date.getMonth();
-      while (date.getMonth() === month) {
-        this.dates.push({ date: date.getDate(), day: date.getDay() });
-        date = new Date(date.getTime() + 1000 * 60 * 60 * 24);
+      let calendarContainer = document.getElementById("calendar");
+      let date = 1;
+      for (let i = 0; i < 6; i++) {
+        let row = document.createElement("div");
+        row.className = "columns";
+
+        calendarContainer.appendChild(row);
+
+        // For each individual day
+         for (let j = 0; j < 7; j++) {
+          if (i === 0 && j < this.firstDay) {
+            let cell = new CalendarColumnClass();
+            var domCell = cell.$mount()
+            row.appendChild(domCell.$el);
+          }
+        }
       }
-      this.firstSundayDate = 8 - this.dates[0].day;
     }
   },
-  created: function() {
+  mounted: function() {
     this.getDates(this.date);
+    this.populateCalendar();
   },
   data() {
     return {
-      firstSundayDate: undefined,
+      firstDay: undefined,
+      daysInMonth: undefined,
       dates: undefined,
       dayNames: [
         "Monday",
@@ -74,7 +97,7 @@ export default {
 .columns {
   height: 26%;
 }
-.calendar {
+#calendar {
   margin: 5em 0 5em 0;
 }
 </style>

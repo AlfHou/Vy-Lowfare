@@ -11,7 +11,10 @@ export default {
 </script>
 <script>
 export default {
-    
+   created: function() {
+       // TODO: Change css if slot date is 0
+
+   } 
 }
 </script>
 <style scoped lang="scss">
