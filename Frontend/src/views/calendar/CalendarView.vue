@@ -1,24 +1,13 @@
 <template>
   <div id="calendar">
-    <!-- <div class="columns">
-      <div v-for="day in dayNames" :key="day" class="column">
+    <div class="columns calendar__columns">
+      <div v-for="day in dayNames" :key="day" class="column" style="margin-left: 2%;">
         <span class="has-text-weight-bold">{{day}}</span>
       </div>
     </div>
-    <div v-for="row_index in 5" :key="row_index" class="columns">
-      <div v-for="column_index in 7" :key="column_index" class="column">
-        <CalendarColumn>
-          <template #date>{{"test"}}</template>
-        </CalendarColumn>
-      </div>
-    </div>-->
   </div>
 </template>
 <script>
-/*eslint no-console: "off"*/
-/*eslint no-unused-vars: "off"*/
-/*eslint vue/no-unused-components: "off"*/
-
 import CalendarColumn from "./CalendarColumn";
 import Vue from "vue";
 
@@ -28,9 +17,6 @@ export default {
       type: Date,
       default: () => new Date()
     }
-  },
-  components: {
-    CalendarColumn
   },
   methods: {
     getDates: function(date) {
@@ -45,16 +31,30 @@ export default {
       let date = 1;
       for (let i = 0; i < 6; i++) {
         let row = document.createElement("div");
-        row.className = "columns";
+        row.classList.add("columns", "calendar__columns");
 
         calendarContainer.appendChild(row);
 
         // For each individual day
-         for (let j = 0; j < 7; j++) {
+        for (let j = 0; j < 7; j++) {
+          // All days that are before the first day in the given month
           if (i === 0 && j < this.firstDay) {
+            let divWrapper = document.createElement("div");
+            divWrapper.classList.add("column", "calendar__columns__column");
+            row.appendChild(divWrapper);
+          } else if (date > this.daysInMonth) {
+            break;
+          } else {
             let cell = new CalendarColumnClass();
-            var domCell = cell.$mount()
-            row.appendChild(domCell.$el);
+            cell.$slots.date = date;
+            let domCell = cell.$mount();
+
+            let divWrapper = document.createElement("div");
+            divWrapper.classList.add("column", "calendar__columns__column");
+            row.appendChild(divWrapper);
+
+            divWrapper.appendChild(domCell.$el);
+            date++;
           }
         }
       }
@@ -82,22 +82,15 @@ export default {
   }
 };
 </script>
-<style scoped lang="scss">
+<style lang="scss">
 @import "../../assets/style/variables.scss";
 
-.header {
-  background-color: $dark;
-  margin-bottom: 2%;
-  height: 18%;
-  border-radius: $radius;
-}
-.column {
-  padding: 0;
-}
-.columns {
-  height: 26%;
-}
 #calendar {
   margin: 5em 0 5em 0;
+}
+.calendar__columns__column {
+  padding: 0;
+  margin: 0.2rem;
+  height: 5rem;
 }
 </style>
