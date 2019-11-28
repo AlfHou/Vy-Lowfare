@@ -21,6 +21,7 @@ export default {
   methods: {
     getDates: function(date) {
       this.firstDay = new Date(date.getFullYear(), date.getMonth()).getDay();
+      this.firstDay = this.firstDay ? this.firstDay - 1 : 6;
       this.daysInMonth =
         32 - new Date(date.getFullYear(), date.getMonth(), 32).getDate();
     },
@@ -43,7 +44,13 @@ export default {
             divWrapper.classList.add("column", "calendar__columns__column");
             row.appendChild(divWrapper);
           } else if (date > this.daysInMonth) {
-            break;
+            if (j % 7 !== 0) {
+              let divWrapper = document.createElement("div");
+              divWrapper.classList.add("column", "calendar__columns__column");
+              row.appendChild(divWrapper);
+            } else {
+              break;
+            }
           } else {
             let cell = new CalendarColumnClass();
             cell.$slots.date = date;

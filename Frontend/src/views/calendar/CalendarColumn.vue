@@ -1,20 +1,16 @@
 <template>
   <div class="calendar__column is-rounded">
-    <p>
+    <p id="date" class="has-text-weight-light is-family-monospace">
       <slot name="date"></slot>.
     </p>
-    <p class="price">900</p>
+    <p id="price" class="has-text-weight-bold">900</p>
   </div>
 </template>
 <script>
 export default {};
 </script>
 <script>
-export default {
-  created: function() {
-    // TODO: Change css if slot date is 0
-  }
-};
+export default {};
 </script>
 <style scoped lang="scss">
 @import "../../assets/style/variables.scss";
@@ -22,5 +18,15 @@ export default {
   background-color: $light;
   border-radius: $radius-large;
   height: 100%;
+  padding: 4% 10% 0% 10%;
+  position: relative;
+}
+#date {
+  text-align: right;
+}
+#price {
+  position: absolute;
+  bottom: 12%;
+  left: 6%;
 }
 </style>
