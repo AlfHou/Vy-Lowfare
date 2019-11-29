@@ -8,23 +8,23 @@
     ".NETCoreApp,Version=v3.0": []
   },
   "packageFolders": {
-    "/Users/Alf/.nuget/packages/": {},
-    "/usr/local/share/dotnet/sdk/NuGetFallbackFolder": {}
+    "/home/alf/.nuget/packages/": {},
+    "/usr/share/dotnet/sdk/NuGetFallbackFolder": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "/Users/Alf/Documents/Proggings/VyLowfareCalendar/Backend/Backend.csproj",
+      "projectUniqueName": "/home/alf/Documents/Webdev/Vy-Lowfare/Backend/Backend.csproj",
       "projectName": "Backend",
-      "projectPath": "/Users/Alf/Documents/Proggings/VyLowfareCalendar/Backend/Backend.csproj",
-      "packagesPath": "/Users/Alf/.nuget/packages/",
-      "outputPath": "/Users/Alf/Documents/Proggings/VyLowfareCalendar/Backend/obj/",
+      "projectPath": "/home/alf/Documents/Webdev/Vy-Lowfare/Backend/Backend.csproj",
+      "packagesPath": "/home/alf/.nuget/packages/",
+      "outputPath": "/home/alf/Documents/Webdev/Vy-Lowfare/Backend/obj/",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
-        "/usr/local/share/dotnet/sdk/NuGetFallbackFolder"
+        "/usr/share/dotnet/sdk/NuGetFallbackFolder"
       ],
       "configFilePaths": [
-        "/Users/Alf/.nuget/NuGet/NuGet.Config"
+        "/home/alf/.nuget/NuGet/NuGet.Config"
       ],
       "originalTargetFrameworks": [
         "netcoreapp3.0"
@@ -55,6 +55,12 @@
         ],
         "assetTargetFallback": true,
         "warn": true,
+        "downloadDependencies": [
+          {
+            "name": "Microsoft.NETCore.App.Ref",
+            "version": "[3.0.0, 3.0.0]"
+          }
+        ],
         "frameworkReferences": {
           "Microsoft.AspNetCore.App": {
             "privateAssets": "none"
@@ -63,7 +69,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "/usr/local/share/dotnet/sdk/3.0.101/RuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "/usr/share/dotnet/sdk/3.0.101/RuntimeIdentifierGraph.json"
       }
     }
   }
