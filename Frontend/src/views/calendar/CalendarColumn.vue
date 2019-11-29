@@ -3,7 +3,9 @@
     <p id="date" class="has-text-weight-light is-family-monospace">
       <slot name="date"></slot>.
     </p>
-    <p id="price" class="has-text-weight-bold">900</p>
+    <p id="price" class="has-text-weight-bold">
+      <slot name="price"></slot>
+    </p>
   </div>
 </template>
 <script>

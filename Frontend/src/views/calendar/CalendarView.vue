@@ -10,6 +10,7 @@
 <script>
 import CalendarColumn from "./CalendarColumn";
 import Vue from "vue";
+import api from "../../priceApi";
 
 export default {
   props: {
@@ -29,6 +30,7 @@ export default {
       var CalendarColumnClass = Vue.extend(CalendarColumn);
 
       let calendarContainer = document.getElementById("calendar");
+      let priceCounter = 0;
       let date = 1;
       for (let i = 0; i < 6; i++) {
         let row = document.createElement("div");
@@ -51,9 +53,11 @@ export default {
             } else {
               break;
             }
+            // Add an actual cell with price and date
           } else {
             let cell = new CalendarColumnClass();
             cell.$slots.date = date;
+            cell.$slots.price = this.prices[priceCounter++];
             let domCell = cell.$mount();
 
             let divWrapper = document.createElement("div");
@@ -66,6 +70,9 @@ export default {
         }
       }
     }
+  },
+  created: function() {
+    this.prices = api.getPrices(this.date);
   },
   mounted: function() {
     this.getDates(this.date);
@@ -84,7 +91,8 @@ export default {
         "Friday",
         "Saturday",
         "Sunday"
-      ]
+      ],
+      prices: undefined
     };
   }
 };
