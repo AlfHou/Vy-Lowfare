@@ -34,3 +34,5 @@
 /home/alf/Documents/Webdev/Vy-Lowfare/Backend/obj/Debug/netcoreapp3.0/Backend.RazorTargetAssemblyInfo.cache
 /home/alf/Documents/Webdev/Vy-Lowfare/Backend/obj/Debug/netcoreapp3.0/Backend.dll
 /home/alf/Documents/Webdev/Vy-Lowfare/Backend/obj/Debug/netcoreapp3.0/Backend.pdb
+/home/alf/Documents/Webdev/Vy-Lowfare/Backend/bin/Debug/netcoreapp3.0/Newtonsoft.Json.dll
+/home/alf/Documents/Webdev/Vy-Lowfare/Backend/obj/Debug/netcoreapp3.0/Backend.csproj.CopyComplete

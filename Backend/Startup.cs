@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Backend.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -26,6 +27,12 @@ namespace Backend
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
+            services.AddHttpClient("vyClient")
+                .ConfigureHttpClient(client =>
+                {
+                    client.BaseAddress = new Uri("https://booking.cloud.vy.no/");
+                });
+            services.AddScoped<VyService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

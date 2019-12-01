@@ -1,10 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using Backend.Services;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
 
 namespace Backend.Controllers
 {
@@ -21,8 +19,27 @@ namespace Backend.Controllers
         [HttpGet]
         public IEnumerable<int> Get(DateTime date)
         {
-            System.Console.WriteLine(date);
-            return _vyService.GetPrices(date);
+            var thisMonth = new DateTime(DateTime.Today.Year, DateTime.Today.Month, 1);
+            // Earlier than current month
+            if (DateTime.Compare(new DateTime(date.Year, date.Month, 1), thisMonth) < 0)
+            {
+                return new List<int>(0);
+            }
+            // Current month. Find prices from today
+            else if (DateTime.Compare(new DateTime(date.Year, date.Month, 1), thisMonth) == 0)
+            {
+                var queryDateFrom = DateTime.Today.AddMinutes(1);
+                var response = _vyService.GetPricesAsync(queryDateFrom);
+
+                return new List<int>() { 5 };
+            }
+            else
+            {
+                var queryDateFrom = new DateTime(date.Year, date.Month, 1).AddMinutes(1);
+                var response = _vyService.GetPricesAsync(queryDateFrom);
+
+                return new List<int>() { 10 };
+            }
         }
     }
 }
