@@ -67,9 +67,18 @@ namespace Backend.Services
             }).Min();
             return lowestPrice;
         }
-        public async Task<int> GetPricesAsync(DateTime date)
+        public IEnumerable<int> GetPricesAsync(DateTime date)
         {
-            return await GetLowestPriceDayAsync(date);
+            // Space for atleast 31 days
+            var priceList = new List<Task<int>>(31);
+            var dateCounter = date;
+            while (dateCounter.Month == date.Month)
+            {
+                priceList.Add(GetLowestPriceDayAsync(dateCounter));
+                dateCounter = dateCounter.AddDays(1);
+            }
+
+            return Task.WhenAll(priceList).Result;
         }
     }
 }

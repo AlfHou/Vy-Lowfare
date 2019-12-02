@@ -30,15 +30,15 @@ namespace Backend.Controllers
             {
                 var queryDateFrom = DateTime.Today.AddMinutes(1);
                 var response = _vyService.GetPricesAsync(queryDateFrom);
+                return response;
 
-                return new List<int>() { 5 };
             }
             else
             {
                 var queryDateFrom = new DateTime(date.Year, date.Month, 1).AddMinutes(1);
                 var response = _vyService.GetPricesAsync(queryDateFrom);
+                return response;
 
-                return new List<int>() { 10 };
             }
         }
     }
