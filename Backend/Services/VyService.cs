@@ -5,6 +5,7 @@ using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 using Backend.Models;
+using Microsoft.Extensions.Caching.Memory;
 using Newtonsoft.Json;
 
 namespace Backend.Services
@@ -12,9 +13,11 @@ namespace Backend.Services
     public class VyService
     {
         private static HttpClient _vyClient;
-        public VyService(IHttpClientFactory clientFactory)
+        private readonly IMemoryCache _cache;
+        public VyService(IHttpClientFactory clientFactory, IMemoryCache cache)
         {
             _vyClient = clientFactory.CreateClient("vyClient");
+            _cache = cache;
         }
         private async Task<int> GetLowestPriceDayAsync(DateTime date)
         {
@@ -37,35 +40,43 @@ namespace Backend.Services
                 priceNecessity = "REQUIRED",
                 hasReturnTrip = false
             };
-            var valuesSerialized = JsonConvert.SerializeObject(values);
-            var content = new StringContent(valuesSerialized, Encoding.UTF8, "application/json");
-            var response = await _vyClient.PostAsync(endpoint, content);
-            var responseString = await response.Content.ReadAsStringAsync();
-            var definition = new
+            // TODO: Fix cache key. It needs to be more unique. Maybe the hash of 'values'?
+            var cacheEntry = await _cache.GetOrCreateAsync("test", async entry =>
             {
-                Itineraries = new List<ItinerariesResponse>()
-            };
+                entry.AbsoluteExpirationRelativeToNow = TimeSpan.FromHours(3);
+                entry.SlidingExpiration = TimeSpan.FromHours(1);
 
-            var deserializeSettings = new JsonSerializerSettings
-            {
-                NullValueHandling = NullValueHandling.Ignore
-            };
+                var valuesSerialized = JsonConvert.SerializeObject(values);
+                var content = new StringContent(valuesSerialized, Encoding.UTF8, "application/json");
+                var response = await _vyClient.PostAsync(endpoint, content);
+                var responseString = await response.Content.ReadAsStringAsync();
+                var definition = new
+                {
+                    Itineraries = new List<ItinerariesResponse>()
+                };
 
-            var responseList = JsonConvert.DeserializeAnonymousType(responseString, definition, deserializeSettings);
-            var lowestPrice = responseList.Itineraries.SelectMany(response =>
-            {
-                return response.PriceOptions
-                    .Select(priceOption =>
-                    {
-                        return priceOption.Amount;
-                    }).Where(value =>
-                    {
-                        return value != 0;
+                var deserializeSettings = new JsonSerializerSettings
+                {
+                    NullValueHandling = NullValueHandling.Ignore
+                };
 
-                    });
+                var responseList = JsonConvert.DeserializeAnonymousType(responseString, definition, deserializeSettings);
+                var lowestPrice = responseList.Itineraries.SelectMany(response =>
+                {
+                    return response.PriceOptions
+                        .Select(priceOption =>
+                        {
+                            return priceOption.Amount;
+                        }).Where(value =>
+                        {
+                            return value != 0;
 
-            }).Min();
-            return lowestPrice;
+                        });
+
+                }).Min();
+                return lowestPrice;
+            });
+            return cacheEntry;
         }
         public IEnumerable<int> GetPricesAsync(DateTime date)
         {
