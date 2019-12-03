@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using Backend.Models;
 using Microsoft.Extensions.Caching.Memory;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Serialization;
 
 namespace Backend.Services
 {
@@ -22,23 +23,11 @@ namespace Backend.Services
         private async Task<int> GetLowestPriceDayAsync(DateTime date)
         {
             var endpoint = "api/itineraries/search";
-            var values = new
+            var values = new VyQuery
             {
-                to = "Bergen",
-                from = "Oslo S",
-                time = date.ToString("yyyy-MM-ddTHH:mm"),
-                limitResultsToSameDay = "true",
-                language = "no",
-                passengers = new List<object>() {
-                    new {
-                        type = "ADULT",
-                        customerNumber = (string)null,
-                        discount = "NONE",
-                        extras = new List<int>(0)
-                    }
-                },
-                priceNecessity = "REQUIRED",
-                hasReturnTrip = false
+                To = "Bergen",
+                From = "Oslo S",
+                Time = date.ToString("yyyy-MM-ddTHH:mm"),
             };
             // TODO: Fix cache key. It needs to be more unique. Maybe the hash of 'values'?
             var cacheEntry = await _cache.GetOrCreateAsync("test", async entry =>
@@ -46,7 +35,12 @@ namespace Backend.Services
                 entry.AbsoluteExpirationRelativeToNow = TimeSpan.FromHours(3);
                 entry.SlidingExpiration = TimeSpan.FromHours(1);
 
-                var valuesSerialized = JsonConvert.SerializeObject(values);
+                var serializeSettings = new JsonSerializerSettings
+                {
+
+                    ContractResolver = new CamelCasePropertyNamesContractResolver()
+                };
+                var valuesSerialized = JsonConvert.SerializeObject(values, serializeSettings);
                 var content = new StringContent(valuesSerialized, Encoding.UTF8, "application/json");
                 var response = await _vyClient.PostAsync(endpoint, content);
                 var responseString = await response.Content.ReadAsStringAsync();
@@ -57,7 +51,7 @@ namespace Backend.Services
 
                 var deserializeSettings = new JsonSerializerSettings
                 {
-                    NullValueHandling = NullValueHandling.Ignore
+                    NullValueHandling = NullValueHandling.Ignore,
                 };
 
                 var responseList = JsonConvert.DeserializeAnonymousType(responseString, definition, deserializeSettings);
