@@ -30,9 +30,9 @@ namespace Backend.Services
                 Time = date.ToString("yyyy-MM-ddTHH:mm"),
             };
             // TODO: Fix cache key. It needs to be more unique. Maybe the hash of 'values'?
-            var cacheEntry = await _cache.GetOrCreateAsync("test", async entry =>
+            var cacheEntry = await _cache.GetOrCreateAsync(values, async entry =>
             {
-                entry.AbsoluteExpirationRelativeToNow = TimeSpan.FromHours(3);
+                entry.AbsoluteExpirationRelativeToNow = TimeSpan.FromHours(4);
                 entry.SlidingExpiration = TimeSpan.FromHours(1);
 
                 var serializeSettings = new JsonSerializerSettings
