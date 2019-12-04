@@ -26,8 +26,10 @@ export default {
       this.daysInMonth =
         32 - new Date(date.getFullYear(), date.getMonth(), 32).getDate();
     },
-    populateCalendar: function() {
+    populateCalendar: function(priceArray) {
       var CalendarColumnClass = Vue.extend(CalendarColumn);
+
+      let today = new Date();
 
       let calendarContainer = document.getElementById("calendar");
       let priceCounter = 0;
@@ -57,7 +59,18 @@ export default {
           } else {
             let cell = new CalendarColumnClass();
             cell.$slots.date = date;
-            cell.$slots.price = this.prices[priceCounter++];
+
+            // Prices are for some month in the future
+            if (
+              new Date(this.date.getFullYear(), this.date.getMonth(), 1) > today
+            ) {
+              cell.$slots.price = priceArray[priceCounter++];
+            }
+            // Prices are for this month
+            else if (date > today.getDay()) {
+              cell.$slots.price = priceArray[priceCounter++];
+            }
+
             let domCell = cell.$mount();
 
             let divWrapper = document.createElement("div");
@@ -71,12 +84,11 @@ export default {
       }
     }
   },
-  created: function() {
-    this.prices = api.getPrices(this.date);
-  },
   mounted: function() {
     this.getDates(this.date);
-    this.populateCalendar();
+    api.getPrices(this.date).then(response => {
+      this.populateCalendar(response.data);
+    });
   },
   data() {
     return {

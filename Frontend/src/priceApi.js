@@ -1,13 +1,16 @@
+const axios = require("axios").default;
+
+const instance = axios.create({
+    baseURL: "https://localhost:5001",
+    timeout: 30000
+})
 
 function getPrices(date) {
-    console.log(date);
-    let returnList = [];
-    let count = 121;
-    for (let i = 0; i < 35; i++) {
-        returnList.push(count += 11);
-    }
-    return returnList;
-
+    return instance.get("/journey", {
+        params: {
+            date: date
+        }
+    });
 }
 
 export default {
