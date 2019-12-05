@@ -17,7 +17,7 @@ namespace Backend.Controllers
             _vyService = vyService;
         }
         [HttpGet]
-        public IEnumerable<int> Get(DateTime date)
+        public IEnumerable<int> Get(DateTime date, String to, String from)
         {
             var thisMonth = new DateTime(DateTime.Today.Year, DateTime.Today.Month, 1);
             // Earlier than current month
@@ -29,14 +29,14 @@ namespace Backend.Controllers
             else if (DateTime.Compare(new DateTime(date.Year, date.Month, 1), thisMonth) == 0)
             {
                 var queryDateFrom = DateTime.Today.AddMinutes(1);
-                var response = _vyService.GetPricesAsync(queryDateFrom);
+                var response = _vyService.GetPricesAsync(queryDateFrom, to, from);
                 return response;
 
             }
             else
             {
                 var queryDateFrom = new DateTime(date.Year, date.Month, 1).AddMinutes(1);
-                var response = _vyService.GetPricesAsync(queryDateFrom);
+                var response = _vyService.GetPricesAsync(queryDateFrom, to, from);
                 return response;
 
             }

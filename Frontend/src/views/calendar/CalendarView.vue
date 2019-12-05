@@ -17,7 +17,13 @@ export default {
     date: {
       type: Date,
       default: () => new Date()
-    }
+    },
+    to: {
+      type: String,
+      default: () => ""
+    },
+    from: String,
+    default: () => ""
   },
   methods: {
     getDates: function(date) {
@@ -86,7 +92,7 @@ export default {
   },
   mounted: function() {
     this.getDates(this.date);
-    api.getPrices(this.date).then(response => {
+    api.getPrices(this.date, this.to, this.from).then(response => {
       this.populateCalendar(response.data);
     });
   },

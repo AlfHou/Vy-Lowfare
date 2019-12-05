@@ -5,10 +5,12 @@ const instance = axios.create({
     timeout: 30000
 })
 
-function getPrices(date) {
+function getPrices(date, to, from) {
     return instance.get("/journey", {
         params: {
-            date: date
+            date: date,
+            to: to,
+            from: from
         }
     });
 }

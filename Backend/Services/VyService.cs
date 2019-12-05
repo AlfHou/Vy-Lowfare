@@ -20,13 +20,13 @@ namespace Backend.Services
             _vyClient = clientFactory.CreateClient("vyClient");
             _cache = cache;
         }
-        private async Task<int> GetLowestPriceDayAsync(DateTime date)
+        private async Task<int> GetLowestPriceDayAsync(DateTime date, String to, String from)
         {
             var endpoint = "api/itineraries/search";
             var values = new VyQuery
             {
-                To = "Bergen",
-                From = "Oslo S",
+                To = to,
+                From = from,
                 Time = date.ToString("yyyy-MM-ddTHH:mm"),
             };
             // TODO: Fix cache key. It needs to be more unique. Maybe the hash of 'values'?
@@ -72,14 +72,14 @@ namespace Backend.Services
             });
             return cacheEntry;
         }
-        public IEnumerable<int> GetPricesAsync(DateTime date)
+        public IEnumerable<int> GetPricesAsync(DateTime date, String to, String from)
         {
             // Space for atleast 31 days
             var priceList = new List<Task<int>>(31);
             var dateCounter = date;
             while (dateCounter.Month == date.Month)
             {
-                priceList.Add(GetLowestPriceDayAsync(dateCounter));
+                priceList.Add(GetLowestPriceDayAsync(dateCounter, to, from));
                 dateCounter = dateCounter.AddDays(1);
             }
 
