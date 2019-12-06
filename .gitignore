@@ -20,3 +20,4 @@ yarn-error.log*
 *.sln
 *.sw?
 *.[Cc]ache
+Backend/obj/Debug/netcoreapp3.0/Backend.csprojAssemblyReference.cache

@@ -31,4 +31,9 @@ export default {};
   bottom: 12%;
   left: 6%;
 }
+.cheapest {
+  #price {
+    color: red;
+  }
+}
 </style>
