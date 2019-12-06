@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using Backend.Services;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 
 namespace Backend.Controllers
 {
@@ -11,33 +12,52 @@ namespace Backend.Controllers
     public class JourneyController : ControllerBase
     {
         private readonly VyService _vyService;
+        private readonly ILogger _logger;
 
-        public JourneyController(VyService vyService)
+        public JourneyController(VyService vyService, ILogger<JourneyController> logger)
         {
             _vyService = vyService;
+            _logger = logger;
         }
         [HttpGet]
-        public IEnumerable<int> Get(DateTime date, String to, String from)
+        public ActionResult<IEnumerable<int>> Get(DateTime date, String to, String from)
         {
             var thisMonth = new DateTime(DateTime.Today.Year, DateTime.Today.Month, 1);
             // Earlier than current month
             if (DateTime.Compare(new DateTime(date.Year, date.Month, 1), thisMonth) < 0)
             {
+                _logger.LogInformation($"Requested date earlier than this month. Requested: {date}. Current: {DateTime.Today}");
                 return new List<int>(0);
             }
             // Current month. Find prices from today
             else if (DateTime.Compare(new DateTime(date.Year, date.Month, 1), thisMonth) == 0)
             {
+                _logger.LogInformation($"Requested date is this month. Requested: {date}. Current: {DateTime.Today}");
                 var queryDateFrom = DateTime.Today.AddMinutes(1);
-                var response = _vyService.GetPricesAsync(queryDateFrom, to, from);
-                return response;
+                try
+                {
+                    var response = _vyService.GetPricesAsync(queryDateFrom, to, from);
+                    return new List<int>(response);
+                }
+                catch (Exception)
+                {
+                    return BadRequest("Something went wrong");
+                }
 
             }
             else
             {
+                _logger.LogInformation($"Requested date is in a future month. Requested: {date}. Current: {DateTime.Today}");
                 var queryDateFrom = new DateTime(date.Year, date.Month, 1).AddMinutes(1);
-                var response = _vyService.GetPricesAsync(queryDateFrom, to, from);
-                return response;
+                try
+                {
+                    var response = _vyService.GetPricesAsync(queryDateFrom, to, from);
+                    return new List<int>(response);
+                }
+                catch (Exception)
+                {
+                    return BadRequest("Something went wrong");
+                }
 
             }
         }
