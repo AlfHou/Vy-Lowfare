@@ -43,7 +43,7 @@ namespace Backend
                 {
                     client.BaseAddress = new Uri("https://booking.cloud.vy.no/");
                 });
-            services.AddScoped<VyService>();
+            services.AddSingleton<VyService>();
             services.AddMemoryCache();
             services.AddHostedService<CachingService>();
         }

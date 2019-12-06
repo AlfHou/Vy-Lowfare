@@ -23,7 +23,7 @@ namespace Backend.Services
             _cache = cache;
             _logger = logger;
         }
-        private async Task<int> GetLowestPriceDayAsync(DateTime date, String to, String from)
+        public async Task UpdateLowestPriceDayCacheAsync(DateTime date, String to, String from)
         {
             var endpoint = "api/itineraries/search";
             var values = new VyQuery
@@ -32,11 +32,69 @@ namespace Backend.Services
                 From = from,
                 Time = date.ToString("yyyy-MM-ddTHH:mm"),
             };
+
+            using (var cacheEntry = _cache.CreateEntry(values)) {
+                cacheEntry.AbsoluteExpirationRelativeToNow = TimeSpan.FromHours(3);
+                _logger.LogInformation($"Updating cache entry for destination: {to}, from: {from}, for date {date}");
+
+                var serializeSettings = new JsonSerializerSettings
+                {
+                    ContractResolver = new CamelCasePropertyNamesContractResolver()
+                };
+                var valuesSerialized = JsonConvert.SerializeObject(values, serializeSettings);
+                var content = new StringContent(valuesSerialized, Encoding.UTF8, "application/json");
+                var response = await _vyClient.PostAsync(endpoint, content);
+                _logger.LogInformation($"Received response from Vy for date {date} with status code: {response.StatusCode}");
+                if (!response.IsSuccessStatusCode)
+                {
+                    var errorString = await response.Content.ReadAsStringAsync();
+
+                    _logger.LogError($@"Failed to get itineraries from: {from}, to: {to} for date {date}.
+                            Received error code: {response.StatusCode} Message: {errorString}");
+                    throw new Exception($"Failed to get itinerary information for {date}");
+                }
+                var responseString = await response.Content.ReadAsStringAsync();
+                var definition = new
+                {
+                    Itineraries = new List<ItinerariesResponse>()
+                };
+
+                var deserializeSettings = new JsonSerializerSettings
+                {
+                    NullValueHandling = NullValueHandling.Ignore,
+
+                };
+
+                var responseList = JsonConvert.DeserializeAnonymousType(responseString, definition, deserializeSettings);
+                var lowestPrice = responseList.Itineraries.SelectMany(response =>
+                {
+                    return response.PriceOptions
+                        .Select(priceOption =>
+                        {
+                            return priceOption.Amount;
+                        }).Where(value =>
+                        {
+                            return value != 0;
+
+                        });
+
+                }).Min();
+                cacheEntry.Value = lowestPrice;
+            };
+        }
+    private async Task<int> GetLowestPriceDayAsync(DateTime date, String to, String from)
+    {
+        var endpoint = "api/itineraries/search";
+        var values = new VyQuery
+        {
+                To = to,
+                From = from,
+                Time = date.ToString("yyyy-MM-ddTHH:mm"),
+            };
             var cacheEntry = await _cache.GetOrCreateAsync(values, async entry =>
             {
                 _logger.LogInformation($"Entry for date {date} not in cache. Fetching");
-                entry.AbsoluteExpirationRelativeToNow = TimeSpan.FromHours(4);
-                entry.SlidingExpiration = TimeSpan.FromHours(1);
+                entry.AbsoluteExpirationRelativeToNow = TimeSpan.FromHours(3);
 
                 var serializeSettings = new JsonSerializerSettings
                 {

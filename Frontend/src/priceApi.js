@@ -2,7 +2,7 @@ const axios = require("axios").default;
 
 const instance = axios.create({
     baseURL: "https://localhost:5001",
-    timeout: 30000
+    timeout: 45000
 })
 
 function getPrices(date, to, from) {
