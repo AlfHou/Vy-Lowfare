@@ -7,7 +7,14 @@ const routes = [
         name: "Calendar",
         path: "/calendar",
         component: CalendarView,
-        props: true
+        props: (route) => {
+            let splitDate = route.query.date.split("-");
+            return {
+                date: new Date(splitDate[0], splitDate[1] - 1),
+                from: route.query.from.replace("+", " "),
+                to: route.query.to.replace("+", " ")
+            }
+        }
     },
     { name: "Search", path: "/", component: SearchView }
 ];

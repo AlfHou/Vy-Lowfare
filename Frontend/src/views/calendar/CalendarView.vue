@@ -22,8 +22,10 @@ export default {
       type: String,
       default: () => ""
     },
-    from: String,
-    default: () => ""
+    from: {
+      type: String,
+      default: () => ""
+    }
   },
   methods: {
     getDates: function(date) {
