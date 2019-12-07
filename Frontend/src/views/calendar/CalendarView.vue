@@ -38,7 +38,7 @@ export default {
       var CalendarColumnClass = Vue.extend(CalendarColumn);
 
       let today = new Date();
-      let lowestPrice = Math.min(...priceArray);
+      let lowestPrice = Math.min(...priceArray.filter(price => price != 0));
 
       let calendarContainer = document.getElementById("calendar");
       let priceCounter = 0;
@@ -83,7 +83,6 @@ export default {
             }
 
             let domCell = cell.$mount();
-            console.log(domCell);
             if (cell.$slots.price === lowestPrice) {
               domCell.$el.classList.add("cheapest");
             }
