@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using Backend.Models;
 using Microsoft.Extensions.Caching.Memory;
@@ -33,7 +34,8 @@ namespace Backend.Services
                 Time = date.ToString("yyyy-MM-ddTHH:mm"),
             };
 
-            using (var cacheEntry = _cache.CreateEntry(values)) {
+            using (var cacheEntry = _cache.CreateEntry(values))
+            {
                 cacheEntry.AbsoluteExpirationRelativeToNow = TimeSpan.FromHours(3);
                 _logger.LogInformation($"Updating cache entry for destination: {to}, from: {from}, for date {date}");
 
@@ -65,28 +67,36 @@ namespace Backend.Services
 
                 };
 
-                var responseList = JsonConvert.DeserializeAnonymousType(responseString, definition, deserializeSettings);
-                var lowestPrice = responseList.Itineraries.SelectMany(response =>
+                try
                 {
-                    return response.PriceOptions
-                        .Select(priceOption =>
-                        {
-                            return priceOption.Amount;
-                        }).Where(value =>
-                        {
-                            return value != 0;
+                    var responseList = JsonConvert.DeserializeAnonymousType(responseString, definition, deserializeSettings);
+                    var lowestPrice = responseList.Itineraries.SelectMany(response =>
+                    {
+                        return response.PriceOptions
+                            .Select(priceOption =>
+                            {
+                                return priceOption.Amount;
+                            }).Where(value =>
+                            {
+                                return value != 0;
 
-                        });
+                            });
 
-                }).Min();
-                cacheEntry.Value = lowestPrice;
+                    }).Min();
+                    cacheEntry.Value = lowestPrice;
+                }
+                catch (Exception)
+                {
+                    _logger.LogInformation($"Failed to get price for date {date}. Returning 0");
+                    cacheEntry.Value = 0;
+                }
             };
         }
-    private async Task<int> GetLowestPriceDayAsync(DateTime date, String to, String from)
-    {
-        var endpoint = "api/itineraries/search";
-        var values = new VyQuery
+        private async Task<int> GetLowestPriceDayAsync(DateTime date, String to, String from)
         {
+            var endpoint = "api/itineraries/search";
+            var values = new VyQuery
+            {
                 To = to,
                 From = from,
                 Time = date.ToString("yyyy-MM-ddTHH:mm"),
@@ -124,24 +134,45 @@ namespace Backend.Services
 
                 };
 
-                var responseList = JsonConvert.DeserializeAnonymousType(responseString, definition, deserializeSettings);
-                var lowestPrice = responseList.Itineraries.SelectMany(response =>
+                try
                 {
-                    return response.PriceOptions
-                        .Select(priceOption =>
-                        {
-                            return priceOption.Amount;
-                        }).Where(value =>
-                        {
-                            return value != 0;
+                    var responseList = JsonConvert.DeserializeAnonymousType(responseString, definition, deserializeSettings);
+                    var lowestPrice = responseList.Itineraries.SelectMany(response =>
+                    {
+                        return response.PriceOptions
+                            .Select(priceOption =>
+                            {
+                                return priceOption.Amount;
+                            }).Where(value =>
+                            {
+                                return value != 0;
 
-                        });
+                            });
 
-                }).Min();
-                return lowestPrice;
+                    }).Min();
+                    return lowestPrice;
+                }
+                catch (Exception)
+                {
+                    _logger.LogInformation($"Failed to get price for date {date}. Returning 0");
+                    return 0;
+                }
             });
             return cacheEntry;
         }
+        public async Task UpdatePricesAsync(DateTime date, String to, String from)
+        {
+            var dateCounter = date;
+            while (dateCounter.Month == date.Month)
+            {
+                await UpdateLowestPriceDayCacheAsync(dateCounter, to, from);
+                dateCounter = dateCounter.AddDays(1);
+                // Sleep 0.5 seconds to not spam Vy's servers when all I am doing is caching
+                Thread.Sleep(500);
+            }
+        }
+
+        // Get all prices for the month of 'date'
         public IEnumerable<int> GetPricesAsync(DateTime date, String to, String from)
         {
             _logger.LogInformation($"Getting prices from: {from}, to: {to}, from date: {date}");
