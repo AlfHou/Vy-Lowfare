@@ -47,6 +47,18 @@ export default {
 
   methods: {
     search: function() {
+      if (this.to == this.from) {
+        this.$buefy.notification.open({
+          duration: 3000,
+          message: "To and from can not be the same",
+          position: "is-bottom",
+          type: "is-danger",
+          hasIcon: false
+        });
+        return;
+      }
+      // TODO: Check if date is earlier than current month. Show notification if it is
+      //if (new Date(this.departure.getFullYear(), this.departure.getMonth(), 1) < new Date())
       this.$router.push({
         name: "Calendar",
         query: {
