@@ -1,5 +1,6 @@
 <template>
   <div id="calendar">
+    <b-loading :active.sync="isLoading"></b-loading>
     <h1>Showing prices from {{this.from}} to {{this.to}}</h1>
     <h2>{{this.months[this.date.getMonth()]}} - {{this.date.getFullYear()}}</h2>
     <div class="columns calendar__columns">
@@ -104,13 +105,14 @@ export default {
     api.getPrices(this.date, this.to, this.from).then(response => {
       this.prices = response.data;
       this.populateCalendar(response.data);
+      this.isLoading = false;
     });
   },
   data() {
     return {
+      isLoading: true,
       firstDay: undefined,
       daysInMonth: undefined,
-      dates: undefined,
       dayNames: [
         "Monday",
         "Tuesday",
