@@ -1,5 +1,5 @@
 <template>
-  <div class="calendar__column is-rounded">
+  <div class="calendar__cell is-rounded">
     <p id="date" class="has-text-weight-light is-family-monospace">
       <slot name="date"></slot>.
     </p>
@@ -16,7 +16,7 @@ export default {};
 </script>
 <style scoped lang="scss">
 @import "../../assets/style/variables.scss";
-.calendar__column {
+.calendar__cell {
   background-color: $light;
   border-radius: $radius-large;
   height: 100%;

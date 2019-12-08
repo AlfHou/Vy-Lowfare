@@ -8,7 +8,7 @@
   </div>
 </template>
 <script>
-import CalendarColumn from "./CalendarColumn";
+import CalendarCell from "./CalendarCell";
 import Vue from "vue";
 import api from "../../priceApi";
 
@@ -35,7 +35,7 @@ export default {
         32 - new Date(date.getFullYear(), date.getMonth(), 32).getDate();
     },
     populateCalendar: function(priceArray) {
-      var CalendarColumnClass = Vue.extend(CalendarColumn);
+      var CalendarCellClass = Vue.extend(CalendarCell);
 
       let today = new Date();
       let lowestPrice = Math.min(...priceArray.filter(price => price != 0));
@@ -66,7 +66,7 @@ export default {
             }
             // Add an actual cell with date (and price if later than today)
           } else {
-            let cell = new CalendarColumnClass();
+            let cell = new CalendarCellClass();
             cell.$slots.date = date;
             // Prices are for some month in the future
             if (
