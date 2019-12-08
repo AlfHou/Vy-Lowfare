@@ -1,5 +1,7 @@
 <template>
   <div id="calendar">
+    <h1>Showing prices from {{this.from}} to {{this.to}}</h1>
+    <h2>{{this.months[this.date.getMonth()]}} - {{this.date.getFullYear()}}</h2>
     <div class="columns calendar__columns">
       <div v-for="day in dayNames" :key="day" class="column" style="margin-left: 2%;">
         <span class="has-text-weight-bold">{{day}}</span>
@@ -118,6 +120,20 @@ export default {
         "Saturday",
         "Sunday"
       ],
+      months: [
+        "January",
+        "February",
+        "March",
+        "April",
+        "May",
+        "June",
+        "July",
+        "August",
+        "September",
+        "October",
+        "November",
+        "December"
+      ],
       prices: undefined
     };
   }
@@ -127,11 +143,22 @@ export default {
 @import "../../assets/style/variables.scss";
 
 #calendar {
-  margin: 5em 0 5em 0;
+  margin: 3em 0 5em 0;
 }
 .calendar__columns__column {
   padding: 0;
   margin: 0.2rem;
   height: 5rem;
+}
+h1 {
+  color: $black-bis;
+  font: $family-sans-serif;
+  font-size: $size-1;
+}
+h2 {
+  color: $grey-dark;
+  font: $family-sans-serif;
+  font-size: $size-3;
+  margin-bottom: 1em;
 }
 </style>
