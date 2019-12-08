@@ -64,11 +64,10 @@ export default {
             } else {
               break;
             }
-            // Add an actual cell with price and date
+            // Add an actual cell with date (and price if later than today)
           } else {
             let cell = new CalendarColumnClass();
             cell.$slots.date = date;
-
             // Prices are for some month in the future
             if (
               new Date(this.date.getFullYear(), this.date.getMonth(), 1) > today
@@ -77,7 +76,7 @@ export default {
               cell.$slots.price = price;
             }
             // Prices are for this month
-            else if (date > today.getDay()) {
+            else if (date >= today.getDate()) {
               let price = priceArray[priceCounter++];
               cell.$slots.price = price;
             }
@@ -101,6 +100,7 @@ export default {
   mounted: function() {
     this.getDates(this.date);
     api.getPrices(this.date, this.to, this.from).then(response => {
+      this.prices = response.data;
       this.populateCalendar(response.data);
     });
   },

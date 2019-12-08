@@ -42,7 +42,7 @@ export default {
     }
   },
   computed: {
-    // TODO: This algorithm should really be imporoved
+    // TODO: This algorithm should really be improved
     filteredStops() {
       return this.stops.filter(option => {
         return (
