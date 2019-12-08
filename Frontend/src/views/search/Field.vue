@@ -1,11 +1,11 @@
 <template>
-  <b-field :label=label type="is-dark">
+  <b-field :label="label" type="is-dark">
     <b-autocomplete
       v-model="destination"
-      :placeholder=placeholder
+      :placeholder="placeholder"
       :keep-first="true"
-      :open-on-focus="true"
-      :data="location"
+      :open-on-focus="false"
+      :data="filteredStops"
       @select="option => selected = option"
       size="is-large"
     ></b-autocomplete>
@@ -22,18 +22,36 @@ export default {
     placeholder: {
       type: String,
       required: true
+    },
+    stops: {
+      type: Array,
+      default: function() {
+        return [];
+      }
     }
   },
   data() {
     return {
-      destination: undefined,
-      location: ["Oslo S", "Bergen", "Trondheim"],
+      destination: "",
       selected: null
     };
   },
   watch: {
     destination(dest) {
-      this.$emit("destChange", dest)
+      this.$emit("destChange", dest);
+    }
+  },
+  computed: {
+    // TODO: This algorithm should really be imporoved
+    filteredStops() {
+      return this.stops.filter(option => {
+        return (
+          option
+            .toString()
+            .toLowerCase()
+            .indexOf(this.destination.toLowerCase()) >= 0
+        );
+      });
     }
   }
 };

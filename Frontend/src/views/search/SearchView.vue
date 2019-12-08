@@ -2,10 +2,10 @@
   <section class="card">
     <div class="card-content columns is-centered">
       <div class="column">
-        <Field @destChange="updateFrom" label="From" placeholder="Where From?" />
+        <Field @destChange="updateFrom" label="From" placeholder="Where From?" :stops="stops" />
       </div>
       <div class="column">
-        <Field @destChange="updateTo" label="To" placeholder="Where to?" />
+        <Field @destChange="updateTo" label="To" placeholder="Where to?" :stops="stops" />
       </div>
     </div>
     <div class="columns is-centered">
@@ -31,14 +31,20 @@
 </template>
 <script>
 import Field from "./Field";
-import EnturService from "@entur/sdk";
-
-const entur = new EnturService({ clientName: "AlfHouge-LowfareTrain" });
+import api from "../../vyApi";
 
 export default {
   components: {
     Field
   },
+  created: function() {
+    api.getStops().then(response => {
+      this.stops = response.data
+        .filter(stop => stop.type == "TRAIN")
+        .map(stop => stop.name);
+    });
+  },
+
   methods: {
     search: function() {
       this.$router.push({
@@ -49,28 +55,25 @@ export default {
             "-" +
             (this.departure.getMonth() + 1),
 
-          to: this.to.properties.name.replace(/ /g, "+"),
-          from: this.from.properties.name.replace(/ /g, "+")
+          to: this.to.replace(/ /g, "+"),
+          from: this.from.replace(/ /g, "+")
         }
       });
     },
     updateFrom: function(dest) {
-      // Get first result
-      entur.getFeatures(dest).then(result => {
-        this.from = result[0];
-      });
+      this.from = dest;
     },
     updateTo: function(dest) {
-      entur.getFeatures(dest).then(result => {
-        this.to = result[0];
-      });
+      this.to = dest;
     }
   },
   data() {
     return {
       from: undefined,
       to: undefined,
-      departure: new Date()
+      departure: new Date(),
+      stops: undefined,
+      test: ["Oslo S", "Trondheim"]
     };
   }
 };
