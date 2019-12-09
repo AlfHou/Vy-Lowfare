@@ -1,7 +1,7 @@
 # Vy Lowfare
 Tool to find best train prices in Norway. 
 > Built with Vue, [Buefy](https://buefy.org/), and .NET Core.
-![preview](./preview)
+![preview](https://github.com/AlfHou/Vy-Lowfare/blob/master/preview.png)
 
 ## Installing / Getting started
 
