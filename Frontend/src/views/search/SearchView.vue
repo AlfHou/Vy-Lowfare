@@ -57,8 +57,23 @@ export default {
         });
         return;
       }
-      // TODO: Check if date is earlier than current month. Show notification if it is
-      //if (new Date(this.departure.getFullYear(), this.departure.getMonth(), 1) < new Date())
+      let today = new Date();
+      if (
+        new Date(this.departure.getFullYear(), this.departure.getMonth(), 1) <
+        new Date(today.getFullYear(), today.getMonth(), 1)
+      ) {
+        this.$buefy.notification.open({
+          duration: 5000,
+          message:
+            "Selected month is earlier than this month. " +
+            "Please select current month, or a month in the future",
+          position: "is-bottom",
+          type: "is-danger",
+          hasIcon: false
+        });
+        return;
+      }
+
       this.$router.push({
         name: "Calendar",
         query: {
