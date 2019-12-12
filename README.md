@@ -26,6 +26,38 @@ npm run serve
 This installs the frontend dependencies and runs the Frontend. 
 
 
+## Docker
+You can also run this project with docker (which is how it runs in production).
+
+### Backend
+To build and run the backend Docker container
+
+Navigate to the `Backend` folder and build the docker image with the following command:
+```shell
+docker build -t vy-backend-img .
+```
+Then run the docker image with this command:
+```shell
+docker run -d -p 5001:80 --name vy-backend vy-backend-img
+```
+The backend is now running in a detached docker container
+
+
+### Frontend
+To build and run the frontend Docker container
+
+Navigate to the `Frontend` folder and build the docker image with the following command:
+```shell
+docker build -t vy-frontend-img .
+```
+
+Then run the docker image with this command:
+```shell
+docker run -it -p 80:80 --rm --name vy-frontend vy-frontend-img
+```
+The frontend container is now running and can be accessed in your web browser
+by navigating to http://127.0.0.1
+
 
 
 ## Developing
