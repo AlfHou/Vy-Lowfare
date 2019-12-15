@@ -22,6 +22,7 @@ namespace Backend.Controllers
         [HttpGet]
         public ActionResult<IEnumerable<int>> Get(DateTime date, String to, String from)
         {
+            _logger.LogError("Endpoint hit");
             var thisMonth = new DateTime(DateTime.Today.Year, DateTime.Today.Month, 1);
             // Earlier than current month
             if (DateTime.Compare(new DateTime(date.Year, date.Month, 1), thisMonth) < 0)
@@ -37,10 +38,13 @@ namespace Backend.Controllers
                 try
                 {
                     var response = _vyService.GetPricesAsync(queryDateFrom, to, from);
-                    return new List<int>(response);
+                    var responseList = new List<int>(response);
+                    _logger.LogInformation($"Response is {responseList.Count} entries long");
+                    return responseList;
                 }
-                catch (Exception)
+                catch (Exception ex)
                 {
+                    _logger.LogWarning($"Bad Request, got exception: {ex}");
                     return BadRequest("Something went wrong");
                 }
 
@@ -52,10 +56,13 @@ namespace Backend.Controllers
                 try
                 {
                     var response = _vyService.GetPricesAsync(queryDateFrom, to, from);
-                    return new List<int>(response);
+                    var responseList = new List<int>(response);
+                    _logger.LogInformation($"Response is {responseList.Count} entries long");
+                    return responseList;
                 }
-                catch (Exception)
+                catch (Exception ex)
                 {
+                    _logger.LogWarning($"Bad Request, got exception: {ex}");
                     return BadRequest("Something went wrong");
                 }
 
