@@ -38,7 +38,7 @@ docker build -t vy-backend-img .
 ```
 Then run the docker image with this command:
 ```shell
-docker run -d -p 5001:80 --name vy-backend vy-backend-img
+docker run -d -p 5000:80 --name vy-backend vy-backend-img
 ```
 The backend is now running in a detached docker container
 

@@ -1,0 +1,12 @@
+#change
+version: '3'
+services:
+    frontend:
+        build: Frontend/
+        ports:
+            - "80:80"
+
+    backend:
+        build: Backend/
+        ports:
+            - "5001:80"
