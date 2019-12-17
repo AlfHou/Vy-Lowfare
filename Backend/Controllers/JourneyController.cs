@@ -37,10 +37,13 @@ namespace Backend.Controllers
                 try
                 {
                     var response = _vyService.GetPricesAsync(queryDateFrom, to, from);
-                    return new List<int>(response);
+                    var responseList = new List<int>(response);
+                    _logger.LogInformation($"Response is {responseList.Count} entries long");
+                    return responseList;
                 }
-                catch (Exception)
+                catch (Exception ex)
                 {
+                    _logger.LogWarning($"Bad Request, got exception: {ex}");
                     return BadRequest("Something went wrong");
                 }
 
@@ -52,10 +55,13 @@ namespace Backend.Controllers
                 try
                 {
                     var response = _vyService.GetPricesAsync(queryDateFrom, to, from);
-                    return new List<int>(response);
+                    var responseList = new List<int>(response);
+                    _logger.LogInformation($"Response is {responseList.Count} entries long");
+                    return responseList;
                 }
-                catch (Exception)
+                catch (Exception ex)
                 {
+                    _logger.LogWarning($"Bad Request, got exception: {ex}");
                     return BadRequest("Something went wrong");
                 }
 
