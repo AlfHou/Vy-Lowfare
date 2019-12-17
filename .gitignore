@@ -26,5 +26,11 @@ yarn-error.log*
 *.exe
 *.pdb
 *.bak
+
 bin
 obj
+out
+
+#Vue
+dist
+node_modules
