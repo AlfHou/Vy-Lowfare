@@ -33,7 +33,7 @@ namespace Backend
             {
                 options.AddPolicy(MyAllowSpecificOrigins, builder =>
                 {
-                    builder.WithOrigins("http://localhost:8080", "http://localhost:80").AllowAnyHeader().AllowAnyMethod();
+                    builder.WithOrigins("http://localhost:8080", "http://localhost").AllowAnyHeader().AllowAnyMethod();
                 });
             });
 
