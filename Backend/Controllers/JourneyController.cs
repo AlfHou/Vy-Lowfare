@@ -22,7 +22,6 @@ namespace Backend.Controllers
         [HttpGet]
         public ActionResult<IEnumerable<int>> Get(DateTime date, String to, String from)
         {
-            _logger.LogError("Endpoint hit");
             var thisMonth = new DateTime(DateTime.Today.Year, DateTime.Today.Month, 1);
             // Earlier than current month
             if (DateTime.Compare(new DateTime(date.Year, date.Month, 1), thisMonth) < 0)
