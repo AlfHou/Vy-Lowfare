@@ -1,10 +1,28 @@
 # Vy Lowfare
 Tool to find best train prices in Norway. 
 > Built with Vue, [Buefy](https://buefy.org/), and .NET Core.
-![preview](https://github.com/AlfHou/Vy-Lowfare/blob/master/preview.png)
+![preview](/Media/preview.png)
 
 ## Installing / Getting started
 
+### Requirements
+* .NET core 3.0
+* npm
+* docker (optional)
+
+### Docker
+The easiest way to get this project running (locally) is by using docker.
+Make sure you have docker engine and docker-compose installed. Then
+simply open a termianl and navigate to the root folder of the project.
+Then run the command 
+```shell
+docker-compose build
+docker-compose run
+```
+you should now be able to open http://localhost in your browser and see the app.
+
+
+### Manually
 To run this project you should have npm installed
 
 Navigate to the `Backend` folder and run the following:
@@ -26,10 +44,14 @@ npm run serve
 This installs the frontend dependencies and runs the Frontend. 
 
 
+<<<<<<< HEAD
+#### Backend
+=======
 ## Docker
 You can also run this project with docker (which is how it runs in production).
 
 ### Backend
+>>>>>>> b6baca1f136b76d1418317230238cc9ab4a41c97
 To build and run the backend Docker container
 
 Navigate to the `Backend` folder and build the docker image with the following command:
@@ -43,7 +65,11 @@ docker run -d -p 5000:80 --name vy-backend vy-backend-img
 The backend is now running in a detached docker container
 
 
+<<<<<<< HEAD
+#### Frontend
+=======
 ### Frontend
+>>>>>>> b6baca1f136b76d1418317230238cc9ab4a41c97
 To build and run the frontend Docker container
 
 Navigate to the `Frontend` folder and build the docker image with the following command:

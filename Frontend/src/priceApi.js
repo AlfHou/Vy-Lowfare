@@ -1,7 +1,10 @@
 const axios = require("axios").default;
 
+const API_ENDPOINT = process.env.NODE_ENV  === "development" ? 
+    "http://localhost:5000" : "http://lowfare-train.alfhouge.no";
+
 const instance = axios.create({
-    baseURL: "http://localhost:5000",
+    baseURL: API_ENDPOINT,
     timeout: 45000
 })
 // TODO: Have NGINX proxy all traffic from /api to the correct docker port
