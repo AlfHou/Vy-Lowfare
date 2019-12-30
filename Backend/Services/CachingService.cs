@@ -27,7 +27,7 @@ namespace Backend.Services
         private async void UpdateCache(object state)
         {
             // TODO: Get prices for three months in the future
-            string[] citiesToCache = { "Bergen", "Stavanger", "Trondheim", "Kristiansand", "Ålesund" };
+            string[] citiesToCache = { "Bergen", "Stavanger", "Trondheim", "Kristiansand"};
             var nextMonth = DateTime.Today.AddMonths(1);
             var twoMonthsFromNow = DateTime.Today.AddMonths(2);
             DateTime[] dates = { DateTime.Today, new DateTime(nextMonth.Year, nextMonth.Month, 1), new DateTime(twoMonthsFromNow.Year, twoMonthsFromNow.Month, 1) };
