@@ -8,7 +8,7 @@ using Microsoft.Extensions.Logging;
 namespace Backend.Controllers
 {
     [ApiController]
-    [Route("[controller]")]
+    [Route("/api/[controller]")]
     public class JourneyController : ControllerBase
     {
         private readonly VyService _vyService;
