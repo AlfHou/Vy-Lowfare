@@ -13,7 +13,7 @@ Tool to find best train prices in Norway.
 ### Docker
 The easiest way to get this project running (locally) is by using docker.
 Make sure you have docker engine and docker-compose installed. Then
-simply open a termianl and navigate to the root folder of the project.
+simply open a terminal and navigate to the root folder of the project.
 Then run the command 
 ```shell
 docker-compose build
@@ -44,14 +44,7 @@ npm run serve
 This installs the frontend dependencies and runs the Frontend. 
 
 
-<<<<<<< HEAD
-#### Backend
-=======
-## Docker
-You can also run this project with docker (which is how it runs in production).
-
 ### Backend
->>>>>>> b6baca1f136b76d1418317230238cc9ab4a41c97
 To build and run the backend Docker container
 
 Navigate to the `Backend` folder and build the docker image with the following command:
@@ -65,11 +58,7 @@ docker run -d -p 5000:80 --name vy-backend vy-backend-img
 The backend is now running in a detached docker container
 
 
-<<<<<<< HEAD
-#### Frontend
-=======
 ### Frontend
->>>>>>> b6baca1f136b76d1418317230238cc9ab4a41c97
 To build and run the frontend Docker container
 
 Navigate to the `Frontend` folder and build the docker image with the following command:
@@ -87,7 +76,6 @@ by navigating to http://127.0.0.1
 
 
 ## Developing
-
 To develop the project further:
 
 ```shell
@@ -103,7 +91,6 @@ This clones the repository into a folder named `vy-lowfare` on your computer and
 
 
 ## Features
-
 This project is inspired by the plane company Norwegian's lowfare calendar for the flight.
 I wanted similar functionality for the Norwegian train company Vy's journeys.
 
@@ -113,21 +100,18 @@ This SPA shows:
   every date 3 months into the future and stores the prices in cache every 2nd hour 
 * Stores all results from Vy in cache for 2 hours
 
-This means that the first lookup for a given journey might take a couple minutes, but
-subsequent queries for the same journey shoul be much faster.
+This means that the first lookup for a given journey might take a couple seconds, but
+subsequent queries for the same journey should be much faster.
 
 ## Contributing
-
-If you want to contribute, please for the repository and use a feature branch. Pull requests
+If you want to contribute, please fork the repository and use a feature branch. Pull requests
 are very welcome and should be merged to the develop branch :)
 
 ## Links
-
 Useful links:
 - Project homepage: https://github.com/AlfHou/Vy-Lowfare
 - Issue tracker: https://github.com/AlfHou/Vy-Lowfare/issues
 
 
 ## Licensing
-
 The code in this project is licensed under MIT license.
