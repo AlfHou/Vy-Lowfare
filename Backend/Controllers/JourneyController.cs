@@ -20,17 +20,27 @@ namespace Backend.Controllers
             _logger = logger;
         }
         [HttpGet]
-        public ActionResult<IEnumerable<int>> Get(DateTime date, String to, String from)
+        public ActionResult<IEnumerable<int>> Get(DateTime? date, string to, string from)
         {
+            if (String.IsNullOrEmpty(to)) {
+                return BadRequest("Destination must be specified");
+            }
+            if (String.IsNullOrEmpty(from)) {
+                return BadRequest("Departure location must be specified");
+            }
+            if (!date.HasValue) {
+                return BadRequest("Please specify a date");
+            }
+
             var thisMonth = new DateTime(DateTime.Today.Year, DateTime.Today.Month, 1);
             // Earlier than current month
-            if (DateTime.Compare(new DateTime(date.Year, date.Month, 1), thisMonth) < 0)
+            if (DateTime.Compare(new DateTime(date.Value.Year, date.Value.Month, 1), thisMonth) < 0)
             {
                 _logger.LogInformation($"Requested date earlier than this month. Requested: {date}. Current: {DateTime.Today}");
                 return new List<int>(0);
             }
             // Current month. Find prices from today
-            else if (DateTime.Compare(new DateTime(date.Year, date.Month, 1), thisMonth) == 0)
+            else if (DateTime.Compare(new DateTime(date.Value.Year, date.Value.Month, 1), thisMonth) == 0)
             {
                 _logger.LogInformation($"Requested date is this month. Requested: {date}. Current: {DateTime.Today}");
                 var queryDateFrom = DateTime.Today.AddMinutes(1);
@@ -51,7 +61,7 @@ namespace Backend.Controllers
             else
             {
                 _logger.LogInformation($"Requested date is in a future month. Requested: {date}. Current: {DateTime.Today}");
-                var queryDateFrom = new DateTime(date.Year, date.Month, 1).AddMinutes(1);
+                var queryDateFrom = new DateTime(date.Value.Year, date.Value.Month, 1).AddMinutes(1);
                 try
                 {
                     var response = _vyService.GetPricesAsync(queryDateFrom, to, from);
