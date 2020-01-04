@@ -1,6 +1,6 @@
 const axios = require("axios").default;
 
-const API_ENDPOINT = process.env.NODE_ENV  === "development" ? 
+const API_ENDPOINT = process.env.NODE_ENV === "development" ?
     "http://localhost:5000/api" : "http://lowfare-train.alfhouge.no/api";
 
 const instance = axios.create({
