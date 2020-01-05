@@ -46,8 +46,8 @@ export default {
   },
 
   methods: {
-    search: function() {
-      if (this.to == this.from) {
+    validateSearch: function() {
+      if (this.to === this.from) {
         this.$buefy.notification.open({
           duration: 3000,
           message: "To and from can not be the same",
@@ -55,7 +55,27 @@ export default {
           type: "is-danger",
           hasIcon: false
         });
-        return;
+        return false;
+      }
+      if (this.to === undefined || this.to === "") {
+        this.$buefy.notification.open({
+          duration: 3000,
+          message: "Please specify where you want to travel to",
+          position: "is-bottom",
+          type: "is-danger",
+          hasIcon: false
+        });
+        return false;
+      }
+      if (this.from === undefined || this.from === "") {
+        this.$buefy.notification.open({
+          duration: 3000,
+          message: "Please specify where you want to travel from",
+          position: "is-bottom",
+          type: "is-danger",
+          hasIcon: false
+        });
+        return false;
       }
       let today = new Date();
       if (
@@ -71,9 +91,15 @@ export default {
           type: "is-danger",
           hasIcon: false
         });
+        return false;
+      }
+      return true;
+    },
+    search: function() {
+      let valid = this.validateSearch();
+      if (!valid) {
         return;
       }
-
       this.$router.push({
         name: "Calendar",
         query: {
@@ -100,7 +126,6 @@ export default {
       to: undefined,
       departure: new Date(),
       stops: undefined,
-      test: ["Oslo S", "Trondheim"]
     };
   }
 };
