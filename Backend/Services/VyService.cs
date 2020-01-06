@@ -70,20 +70,15 @@ namespace Backend.Services
                 try
                 {
                     var responseList = JsonConvert.DeserializeAnonymousType(responseString, definition, deserializeSettings);
-                    var lowestPrice = responseList.Itineraries.SelectMany(response =>
-                    {
-                        return response.PriceOptions
-                            .Select(priceOption =>
-                            {
-                                return priceOption.Amount;
-                            }).Where(value =>
-                            {
-                                return value != 0;
 
-                            });
+                    
+                    var lowestItineraryResponse = responseList.Itineraries.Min();
+                    var lowestOption = new LowPriceOption{
+                        Amount = lowestItineraryResponse.LowestPrice(),
+                        NightTrain = lowestItineraryResponse.NightTrain
+                    };
 
-                    }).Min();
-                    cacheEntry.Value = lowestPrice;
+                    cacheEntry.Value = lowestOption;
                 }
                 catch (Exception)
                 {
@@ -92,7 +87,7 @@ namespace Backend.Services
                 }
             };
         }
-        private async Task<int> GetLowestPriceDayAsync(DateTime date, String to, String from)
+        private async Task<LowPriceOption> GetLowestPriceDayAsync(DateTime date, String to, String from)
         {
             var endpoint = "api/itineraries/search";
             var values = new VyQuery
@@ -101,7 +96,7 @@ namespace Backend.Services
                 From = from,
                 Time = date.ToString("yyyy-MM-ddTHH:mm"),
             };
-            var cacheEntry = await _cache.GetOrCreateAsync(values, async entry =>
+            var cacheEntry = await _cache.GetOrCreateAsync<LowPriceOption>(values, async entry =>
             {
                 _logger.LogInformation($"Entry for date {date} not in cache. Fetching");
                 entry.AbsoluteExpirationRelativeToNow = TimeSpan.FromHours(3);
@@ -137,25 +132,23 @@ namespace Backend.Services
                 try
                 {
                     var responseList = JsonConvert.DeserializeAnonymousType(responseString, definition, deserializeSettings);
-                    var lowestPrice = responseList.Itineraries.SelectMany(response =>
-                    {
-                        return response.PriceOptions
-                            .Select(priceOption =>
-                            {
-                                return priceOption.Amount;
-                            }).Where(value =>
-                            {
-                                return value != 0;
 
-                            });
+                    
+                    var lowestItineraryResponse = responseList.Itineraries.Min();
+                    var lowestOption = new LowPriceOption{
+                        Amount = lowestItineraryResponse.LowestPrice(),
+                        NightTrain = lowestItineraryResponse.NightTrain
+                    };
 
-                    }).Min();
-                    return lowestPrice;
+                    return lowestOption;
                 }
                 catch (Exception)
                 {
                     _logger.LogInformation($"Failed to get price for date {date}. Returning 0");
-                    return 0;
+                    return new LowPriceOption {
+                        Amount = 0,
+                        NightTrain = false
+                    };
                 }
             });
             return cacheEntry;
@@ -173,11 +166,11 @@ namespace Backend.Services
         }
 
         // Get all prices for the month of 'date'
-        public IEnumerable<int> GetPricesAsync(DateTime date, String to, String from)
+        public IEnumerable<LowPriceOption> GetPricesAsync(DateTime date, String to, String from)
         {
             _logger.LogInformation($"Getting prices from: {from}, to: {to}, from date: {date}");
             // Space for atleast 31 days
-            var priceList = new List<Task<int>>(31);
+            var priceList = new List<Task<LowPriceOption>>(31);
             var dateCounter = date;
             while (dateCounter.Month == date.Month)
             {

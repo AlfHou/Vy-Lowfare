@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Backend.Models;
 using Backend.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -20,7 +21,7 @@ namespace Backend.Controllers
             _logger = logger;
         }
         [HttpGet]
-        public ActionResult<IEnumerable<int>> Get(DateTime? date, string to, string from)
+        public ActionResult<IEnumerable<LowPriceOption>> Get(DateTime? date, string to, string from)
         {
             if (String.IsNullOrEmpty(to)) {
                 return BadRequest("Destination must be specified");
@@ -37,7 +38,7 @@ namespace Backend.Controllers
             if (DateTime.Compare(new DateTime(date.Value.Year, date.Value.Month, 1), thisMonth) < 0)
             {
                 _logger.LogInformation($"Requested date earlier than this month. Requested: {date}. Current: {DateTime.Today}");
-                return new List<int>(0);
+                return new List<LowPriceOption>(0);
             }
             // Current month. Find prices from today
             else if (DateTime.Compare(new DateTime(date.Value.Year, date.Value.Month, 1), thisMonth) == 0)
@@ -47,7 +48,7 @@ namespace Backend.Controllers
                 try
                 {
                     var response = _vyService.GetPricesAsync(queryDateFrom, to, from);
-                    var responseList = new List<int>(response);
+                    var responseList = new List<LowPriceOption>(response);
                     _logger.LogInformation($"Response is {responseList.Count} entries long");
                     return responseList;
                 }
@@ -65,7 +66,7 @@ namespace Backend.Controllers
                 try
                 {
                     var response = _vyService.GetPricesAsync(queryDateFrom, to, from);
-                    var responseList = new List<int>(response);
+                    var responseList = new List<LowPriceOption>(response);
                     _logger.LogInformation($"Response is {responseList.Count} entries long");
                     return responseList;
                 }
