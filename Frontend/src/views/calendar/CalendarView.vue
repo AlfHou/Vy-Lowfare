@@ -41,7 +41,9 @@ export default {
       var CalendarCellClass = Vue.extend(CalendarCell);
 
       let today = new Date();
-      let lowestPrice = Math.min(...priceArray.filter(price => price != 0));
+
+      let lowestPrice = Math.min(...priceArray.filter(price => price !== null && price.amount != 0)
+      .map(price => price.amount));
 
       let calendarContainer = document.getElementById("calendar");
       let priceCounter = 0;
@@ -76,12 +78,18 @@ export default {
               new Date(this.date.getFullYear(), this.date.getMonth(), 1) > today
             ) {
               let price = priceArray[priceCounter++];
-              cell.$slots.price = price;
+              cell.$slots.price = price !== null ? price.amount : null;
+              if (price !== null) {
+                cell.$props.nightTrain = price.nightTrain;
+              }
             }
             // Prices are for this month
             else if (date >= today.getDate()) {
-              let price = priceArray[priceCounter++];
-              cell.$slots.price = price;
+              let price = priceArray[priceCounter++]; 
+              cell.$slots.price = price !== null ? price.amount : null;
+              if (price !== null) {
+                cell.$props.nightTrain = price.nightTrain;
+              }
             }
 
             let domCell = cell.$mount();
