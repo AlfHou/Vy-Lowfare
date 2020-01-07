@@ -83,7 +83,7 @@ namespace Backend.Services
                 catch (Exception)
                 {
                     _logger.LogInformation($"Failed to get price for date {date}. Returning 0");
-                    cacheEntry.Value = 0;
+                    cacheEntry.Value = null;
                 }
             };
         }
