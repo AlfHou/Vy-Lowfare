@@ -1,4 +1,6 @@
 # Vy Lowfare
+[Link to deployed project](http://lowfare-train.alfhouge.no)
+
 Tool to find best train prices in Norway. 
 > Built with Vue, [Buefy](https://buefy.org/), and .NET Core.
 ![preview](/Media/preview.png)
