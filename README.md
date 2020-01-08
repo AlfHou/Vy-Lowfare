@@ -1,5 +1,5 @@
 # Vy Lowfare
-[Link to deployed project](http://lowfare-train.alfhouge.no)
+[~~Link to deployed project~~](http://lowfare-train.alfhouge.no) As of 08.01.20, Vy has blocked the IP of the server that the project is hosted on. I therefore need to transfer the backend to call the Entur API instead to get the project back up...
 
 Tool to find best train prices in Norway. 
 > Built with Vue, [Buefy](https://buefy.org/), and .NET Core.
