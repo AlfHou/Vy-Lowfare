@@ -16,6 +16,18 @@
 <script>
 export default {
   name: "app",
+  created: function() {
+    this.$buefy.notification.open({
+      duration: 30000,
+      message: "Unfortunately, Vy has blocked the ip of the server " +
+       "and the project therefore doesn't work properly. " +
+        "The project should still be able to be run locally. " +
+        "<br>See https://github.com/AlfHou/Vy-Lowfare for instructions on how to do so.",
+        position: "is-top",
+        type: "is-warning",
+        hasIcon: true
+    })
+  },
   methods: {
 
     home: function() {
