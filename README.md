@@ -19,7 +19,7 @@ simply open a terminal and navigate to the root folder of the project.
 Then run the command 
 ```shell
 docker-compose build
-docker-compose run
+docker-compose up -d
 ```
 you should now be able to open http://localhost in your browser and see the app.
 
